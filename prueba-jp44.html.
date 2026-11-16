@@ -1,0 +1,172 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10365d"><title>JP SERCONT 4.4 - Prueba</title><style>
+:root{font-family:system-ui,-apple-system,Arial,sans-serif;background:#f0f4f9;color:#172a42}*{box-sizing:border-box}body{margin:0}.wrap{max-width:680px;margin:auto;padding:16px 14px 45px}header{background:linear-gradient(110deg,#0b3156,#155b9b);border-radius:20px;color:#fff;padding:22px}h1{margin:0;font-size:26px}header p{margin:7px 0 0;opacity:.86}.panel{background:#fff;border-radius:17px;padding:17px;margin:14px 0;box-shadow:0 2px 10px #193d5c14}h2{font-size:18px;margin:0 0 11px}button{background:#145b9c;color:white;border:0;border-radius:10px;padding:12px 14px;font-size:14px;font-weight:600;cursor:pointer}button.secondary{background:#e5eef8;color:#16426a}button.stop{background:#9d3b4b}button:disabled{opacity:.55}button:focus-visible,input:focus-visible{outline:3px solid #8ac3fa}input[type=text],input[type=datetime-local]{width:100%;border:1px solid #c1d0df;border-radius:10px;padding:12px;font:inherit}.buttons{display:flex;gap:7px;flex-wrap:wrap}.status{background:#edf4fb;border-radius:10px;padding:11px;margin:10px 0;font-size:14px;white-space:pre-line}.small{font-size:12px;color:#5b6d81;line-height:1.55}.chat{height:250px;overflow:auto;background:#f4f8fc;padding:10px;border-radius:13px;display:flex;flex-direction:column;gap:9px}.bubble{background:#fff;border-radius:12px;padding:10px 12px;max-width:91%;align-self:flex-start;white-space:pre-wrap}.bubble.you{background:#d7eafd;align-self:flex-end}.task{display:flex;align-items:start;gap:8px;padding:12px 0;border-bottom:1px solid #e4eaf0}.task:last-child{border:0}.task-main{flex:1;min-width:0}.task b{font-size:14px;overflow-wrap:anywhere}.task .small{display:block;margin-top:4px}.task button{padding:7px 9px}label{font-size:14px;display:flex;gap:8px;align-items:center}.task.done b{text-decoration:line-through;color:#6b7d8a}.pill{display:inline-block;background:#e9f1f9;border-radius:99px;padding:5px 9px;font-size:12px}.row{display:flex;gap:8px;margin-top:10px}.row input{flex:1;min-width:0}.warn{border-left:4px solid #d49c37;padding-left:10px}.badge{font-size:12px;color:#d9ecfb}footer{font-size:12px;color:#596d80;padding:4px 6px}
+</style></head><body><div class="wrap"><header><h1>JP · SERCONT 4.3 (prueba)</h1><p>Escucha, conversa y organiza pendientes</p><span class="badge">Conversación con IA opcional · Tareas guardadas en este dispositivo</span></header>
+<section class="panel"><h2>1. Hablar con JP</h2><div class="buttons"><button id="continuous">🎙️ Iniciar conversación</button><button id="wake" class="secondary">👂 Activar «Hola JP»</button><button id="once" class="secondary">Hablar una vez</button><button id="stop" class="stop">Detener</button></div><div id="status" class="status" aria-live="polite">Listo para conversar. Pulsa «Iniciar conversación».</div><label><input id="voice" type="checkbox" checked> Leer respuestas en voz alta</label><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0"><label for="voiceChoice">Voz de JP:</label><select id="voiceChoice" style="flex:1;min-width:170px;padding:10px;border:1px solid #c1d0df;border-radius:9px"><option value="">Automática (español)</option></select><label for="rateChoice">Velocidad</label><select id="rateChoice" style="padding:9px;border:1px solid #c1d0df;border-radius:9px"><option value="0.85">Pausada</option><option value="0.95" selected>Natural</option><option value="1.05">Ágil</option></select><label for="pitchChoice">Tono</label><select id="pitchChoice" style="padding:9px;border:1px solid #c1d0df;border-radius:9px"><option value="0.88">Grave</option><option value="1" selected>Normal</option><option value="1.1">Agudo</option></select><button id="testVoice" type="button" class="secondary">Escuchar voz</button></div><div id="chat" class="chat" aria-live="polite"><div class="bubble">Hola, soy JP. Cuéntame qué necesitas. Puedes hablar conmigo, registrar tareas o decir que terminaste una revisión. Cuando termines una tarea, la cerraré directamente si puedo identificarla.</div></div><div class="row"><input id="typed" type="text" placeholder="Escribe o dicta un mensaje"><button id="send">Enviar</button></div><p class="small">Prueba una voz distinta desde la lista. La calidad depende de las voces instaladas en Android: variar velocidad y tono no convierte una voz sintética en humana. En modo «Hola JP», primero activa la escucha una vez y di «Hola JP». Funciona solo mientras la página esté abierta y Chrome mantenga la sesión de voz. No activa JP desde el teléfono bloqueado. En conversación, JP intenta volver a escuchar después de responder. Puedes elegir otra voz y velocidad. Chrome puede detener el reconocimiento al apagar la pantalla o cambiar de aplicación. Si no escucha, utiliza «Hablar una vez».</p></section>
+<section class="panel"><h2>2. Conexión de inteligencia artificial</h2><p class="small">Cuando configures el Worker de Cloudflare, JP podrá conversar de manera libre. Para tareas sigue utilizando los comandos de registro, consulta y cierre.</p><label style="display:block;margin:10px 0 4px">Dirección del Worker (HTTPS)</label><input id="endpoint" type="text" placeholder="https://jp-sercont-api.tuusuario.workers.dev"><label style="display:block;margin:10px 0 4px">Código de acceso personal</label><input id="access" type="password" autocomplete="off" placeholder="Código que configurarás en Cloudflare"><div class="buttons" style="margin-top:10px"><button id="saveConfig">Guardar conexión</button><button class="secondary" id="testAI">Probar IA</button></div><div id="aiStatus" class="status" aria-live="polite">IA no configurada. Los comandos de tareas siguen disponibles.</div><p class="small warn">En este prototipo, la dirección del Worker y tu código de acceso se guardan localmente en Chrome. Usa un código exclusivo de JP; no reutilices contraseñas. El Worker debe ser privado mediante ese código, pero esto no sustituye una autenticación profesional.</p></section>
+<section class="panel"><h2>3. Tareas <span class="pill" id="count">0 pendientes</span></h2><div id="tasks"></div><div class="buttons" style="margin-top:12px"><button class="secondary" id="export">Exportar copia</button><button class="secondary" id="clear">Eliminar tareas terminadas</button></div><p class="small">Se conservan en este navegador y dispositivo. Esta prueba importa una copia de los pendientes de JP 3.0 en este navegador. Los cambios de esta prueba no modifican JP 3.0. No se sincronizan entre dispositivos.</p></section>
+<section class="panel"><h2>4. Avisos de prueba</h2><div class="buttons"><button id="permission">Permitir notificaciones</button><button id="testalert" class="secondary">Probar aviso</button></div><p class="small warn"><b>Limitación:</b> los avisos programados en esta versión solo se comprueban mientras la página esté abierta y activa. No son recordatorios confiables con la pantalla bloqueada o la aplicación cerrada. Después construiremos un servicio de notificaciones persistentes.</p></section><footer>Privacidad: no introduzcas información confidencial real de clientes durante las pruebas. El reconocimiento de voz de Chrome podría utilizar servicios de transcripción externos. La IA solo recibe el texto de tus consultas y, para contextualizar respuestas, una lista breve de tareas. No incluyas datos sensibles de clientes en esta etapa.</footer></div>
+<script>
+(()=>{'use strict';const $=s=>document.getElementById(s);const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;const KEY='jp_sercont_tasks_v4_4_prueba';const CONFIG_KEY='jp_sercont_ai_config_v4';let voices=[];let history=[];let busyAI=false;let wakeMode=false,wakeUntil=0;let tasks=[],rec=null,active=false,continuous=false,stopping=false,speaking=false,timer=null,pendingClose=null,pendingCloseChoice=false,utteranceTimeout=null,restartFailures=0,lastUserSpeech=0;
+try{const stored=localStorage.getItem(KEY)||localStorage.getItem('jp_sercont_tasks_v4_3_prueba')||localStorage.getItem('jp_sercont_tasks_v4_2_prueba')||localStorage.getItem('jp_sercont_tasks_v4_1_prueba')||localStorage.getItem('jp_sercont_tasks_v3')||localStorage.getItem('jp_sercont_tasks_v2')||'[]';tasks=JSON.parse(stored).map(x=>({id:x.id||String(Date.now()+Math.random()),title:x.title||'Tarea sin título',done:!!x.done,created:x.created||Date.now(),due:x.due||null,alerted:!!x.alerted}))}catch{tasks=[]}
+const norm=x=>String(x||'').toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();const persist=()=>{localStorage.setItem(KEY,JSON.stringify(tasks))};const setStatus=s=>$('status').textContent=s;const addBubble=(s,you=false)=>{const e=document.createElement('div');e.className='bubble'+(you?' you':'');e.textContent=s;$('chat').append(e);$('chat').scrollTop=$('chat').scrollHeight};
+function restart(delay=750){
+ clearTimeout(timer);
+ if(!continuous||stopping||speaking||active||busyAI)return;
+ timer=setTimeout(()=>{if(continuous&&!stopping&&!speaking&&!active&&!busyAI)start()},delay);
+}
+function speechText(value){
+ let s=String(value||'');
+ s=s.replace(/```[\s\S]*?```/g,' He incluido un bloque de código en el texto. ');
+ s=s.replace(/\[([^\]]+)\]\((?:https?:\/\/)[^)]+\)/g,'$1');
+ s=s.replace(/https?:\/\/\S+/g,'');
+ s=s.replace(/(^|\n)\s{0,3}#{1,6}\s*/g,'$1');
+ s=s.replace(/\*\*|__|~~|`/g,'').replace(/[\*_#]/g,'');
+ s=s.replace(/(^|\n)\s*[-*•]\s+/g,'$1');
+ s=s.replace(/(^|\n)\s*\d+[.)]\s+/g,'$1');
+ s=s.replace(/[★☆◆■►]/g,'');
+ s=s.replace(/\s+/g,' ').trim();
+ return s.slice(0,950);
+}
+function loadVoices(){
+ if(!('speechSynthesis' in window))return;
+ voices=speechSynthesis.getVoices().filter(v=>/^es(?:-|$)/i.test(v.lang)).sort((a,b)=>{const score=v=>(v.localService?3:0)+(/google|natural|neural|premium/i.test(v.name)?4:0)+(/es-PE|es-MX|es-CO/i.test(v.lang)?2:0);return score(b)-score(a)});
+ const select=$('voiceChoice'), saved=localStorage.getItem('jp_voice_v42')||'';
+ select.replaceChildren();const automatic=document.createElement('option');automatic.value='';automatic.textContent='Automática (español)';select.append(automatic);
+ voices.forEach(v=>{let o=document.createElement('option');o.value=v.voiceURI;o.textContent=v.name+' ('+v.lang+')';select.append(o)});
+ select.value=[...select.options].some(o=>o.value===saved)?saved:(voices[0]?.voiceURI||'');
+}
+function reply(s){
+ addBubble(s);
+ const spoken=speechText(s);
+ if(!$('voice').checked||!('speechSynthesis' in window)||!spoken){restart(700);return}
+ speaking=true;clearTimeout(timer);clearTimeout(utteranceTimeout);
+ if(rec&&active)try{rec.abort()}catch{}
+ let finished=false;
+ const finish=()=>{if(finished)return;finished=true;clearTimeout(utteranceTimeout);speaking=false;setStatus(continuous?'JP terminó. Escuchando de nuevo…':'JP terminó de hablar.');restart(700)};
+ try{
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(spoken);
+  u.lang='es-PE';u.rate=Number($('rateChoice').value)||0.95;u.pitch=Number($('pitchChoice').value)||1;
+  const picked=voices.find(v=>v.voiceURI===$('voiceChoice').value);if(picked){u.voice=picked;u.lang=picked.lang}
+  u.onend=finish;u.onerror=finish;
+  utteranceTimeout=setTimeout(()=>{try{speechSynthesis.cancel()}catch{};finish()},Math.min(70000,Math.max(7500,spoken.length*110+4500)));
+  speechSynthesis.speak(u);
+ }catch(e){finish()}
+}
+function stop(){
+ wakeMode=false;wakeUntil=0;$('wake').textContent='👂 Activar «Hola JP»';
+ continuous=false;stopping=true;clearTimeout(timer);clearTimeout(utteranceTimeout);
+ if(rec)try{rec.abort()}catch{};
+ try{speechSynthesis.cancel()}catch{}
+ active=false;speaking=false;setStatus('Escucha detenida.');$('continuous').textContent='🎙️ Iniciar conversación';
+}
+function start(){
+ if(!Speech){setStatus('Este navegador no permite reconocimiento de voz.');continuous=false;return}
+ if(active||speaking||busyAI||stopping)return;
+ try{
+  rec=new Speech();rec.lang='es-PE';rec.interimResults=false;rec.continuous=false;
+  rec.onstart=()=>{active=true;restartFailures=0;setStatus(wakeMode&&Date.now()>wakeUntil?'👂 Esperando «Hola JP»…':'🎙️ JP te escucha. Habla ahora…')};
+  rec.onresult=e=>{
+   const s=e.results[e.results.length-1][0].transcript;
+   lastUserSpeech=Date.now();setStatus('Entendí: '+s);
+   try{rec.stop()}catch{}
+   process(s);
+  };
+  rec.onerror=e=>{
+   const err=e.error||'desconocido';setStatus('Error de voz: '+err);
+   if(['not-allowed','service-not-allowed','audio-capture'].includes(err)){continuous=false;stopping=true;$('continuous').textContent='🎙️ Iniciar conversación';return}
+   if(err==='network'){continuous=false;stopping=true;$('continuous').textContent='🎙️ Iniciar conversación';setStatus('Error de red del reconocimiento. Pulsa Iniciar conversación para reintentar.');return}
+   restartFailures++;
+  };
+  rec.onend=()=>{
+   active=false;
+   if(continuous&&!stopping&&!speaking&&!busyAI){
+    if(restartFailures>3){setStatus('El micrófono se interrumpió varias veces. Pulsa Pausar y luego Iniciar conversación.');stop();return}
+    restart(1250);
+   }
+  };
+  rec.start();
+ }catch(e){active=false;setStatus('No se pudo activar el reconocimiento: '+e.message+'. Vuelve a pulsar Iniciar conversación.');continuous=false;$('continuous').textContent='🎙️ Iniciar conversación'}
+}
+function dueFrom(s){const n=norm(s);let m=n.match(/(?:en|dentro de)\s+(\d+)\s*(minuto|minutos|hora|horas)/);if(!m)return null;return Date.now()+Number(m[1])*(m[2].startsWith('hora')?3600000:60000)}
+function cleanTitle(s){return s.replace(/^\s*(jp[, ]*)?(anota|apunta|registra|agrega|crea una tarea|recuerdame|recuérdame)\s*/i,'').replace(/\s+(?:en|dentro de)\s+\d+\s*(?:minutos?|horas?)\s*$/i,'').trim()}
+function render(){const open=tasks.filter(t=>!t.done);$('count').textContent=open.length+' pendientes';$('tasks').replaceChildren();if(tasks.length===0){$('tasks').textContent='Aún no hay tareas.';return}for(const t of [...tasks].reverse()){let el=document.createElement('div');el.className='task'+(t.done?' done':'');let main=document.createElement('div');main.className='task-main';let name=document.createElement('b');name.textContent=(t.done?'✓ ':'○ ')+t.title;let meta=document.createElement('span');meta.className='small';meta.textContent=t.done?'Terminada':t.due?'Aviso: '+new Date(t.due).toLocaleString('es-PE'):'Sin hora de aviso';main.append(name,meta);let b=document.createElement('button');b.className='secondary';b.textContent=t.done?'Reabrir':'Terminar';b.onclick=()=>{t.done=!t.done;persist();render();reply((t.done?'Marcado como terminado: ':'He reabierto: ')+t.title)};el.append(main,b);$('tasks').append(el)}}
+const stopwords=new Set(['ya','termine','terminado','termine','revise','revisado','de','del','la','el','las','los','por','para','en','tarea','trabajo','cliente','empresa','esta','conforme','marcar','marca','cierra','cerra','he','que','lo','listo','completado']);function hits(q,t){const words=norm(q).split(' ').filter(w=>w.length>2&&!stopwords.has(w));const target=norm(t);return words.reduce((a,w)=>a+(target.includes(w)?1:0),0)}
+
+async function askAI(message){
+ const endpoint=$('endpoint').value.trim().replace(/\/+$/,'');const access=$('access').value.trim();
+ if(!endpoint||!access){reply('Entendí tu mensaje, pero todavía no has conectado la inteligencia artificial. Configura la dirección del Worker y tu código de acceso en la sección 2.');return}
+ if(!/^https:\/\/[^\s]+\.workers\.dev$/.test(endpoint)){reply('La dirección del Worker debe ser HTTPS y terminar en workers punto dev.');return}
+ if(busyAI){setStatus('JP está preparando una respuesta.');return}
+ busyAI=true;setStatus('JP está pensando…');$('aiStatus').textContent='Consultando la inteligencia artificial…';
+ const recentTasks=tasks.filter(t=>!t.done).slice(0,12).map(t=>t.title.slice(0,160));
+ try{const response=await fetch(endpoint+'/chat',{method:'POST',headers:{'Content-Type':'application/json','X-JP-Access':access},body:JSON.stringify({message:('Responde en español peruano natural, breve y amable, como un compañero de trabajo. Contesta directamente y evita repetir preguntas. Máximo 2 frases por defecto, salvo que te pidan detalle. NO uses markdown, asteriscos, títulos, listas ni símbolos decorativos. No finjas registrar o cerrar tareas salvo que la aplicación lo haya hecho. Consulta del usuario: '+message).slice(0,1900),history:history.slice(-6),tasks:recentTasks})});
+ const data=await response.json().catch(()=>({error:'Respuesta no válida del servidor.'}));
+ if(!response.ok)throw new Error(data.error||'Error de conexión '+response.status);
+ const answer=speechText(String(data.reply||'No recibí respuesta.')).slice(0,1050);
+ history.push({role:'user',content:message.slice(0,1500)},{role:'assistant',content:answer});history=history.slice(-8);
+ $('aiStatus').textContent='Conectado. Última conversación correcta.';reply(answer)
+ }catch(e){$('aiStatus').textContent='Error: '+e.message;reply('No pude conectar con la inteligencia artificial. Revisa el Worker o el código de acceso. Detalle: '+e.message)}
+ finally{busyAI=false;setStatus('JP está listo para escucharte.');restart(900)}
+}
+function completeTask(task){
+ task.done=true;pendingClose=null;pendingCloseChoice=false;persist();render();reply('Listo, cerré '+task.title+'.');
+}
+function findTaskFromSpeech(query){
+ const open=tasks.filter(t=>!t.done);
+ if(!open.length)return {error:'No tienes tareas abiertas.'};
+ const ranked=open.map(t=>({t,score:hits(query,t.title)})).sort((a,b)=>b.score-a.score);
+ if(ranked.length===1)return {task:ranked[0].t};
+ if(ranked[0].score===0)return {ambiguous:true};
+ if(ranked[1] && ranked[1].score===ranked[0].score)return {ambiguous:true};
+ return {task:ranked[0].t};
+}
+function process(raw){let s=raw.trim();if(!s)return;
+ if(wakeMode){
+   const nWake=norm(s);
+   if(Date.now()>wakeUntil){
+     const matched=nWake.match(/(?:^|\s)(?:hola jp|oye jp|ey jp)(?:\s|$)/);
+     if(!matched){setStatus('👂 Esperando «Hola JP»…');restart(650);return}
+     wakeUntil=Date.now()+60000;
+     s=s.replace(/^(?:.*?)(?:hola\s+jp|oye\s+jp|ey\s+jp)[\s,.:;!?]*/i,'').trim();
+     if(!s){reply('Te escucho.');return}
+   }else{wakeUntil=Date.now()+60000}
+ }
+ addBubble(s,true);
+ const n=norm(s.replace(/^jp\s*[,]?/i,''));
+ // No pedir una confirmacion adicional cuando la actividad es identificable.
+ if(pendingCloseChoice){
+   if(/^(cancelar|cancela|no)$/.test(n)){pendingCloseChoice=false;reply('De acuerdo.');return}
+   const match=findTaskFromSpeech(n);
+   if(match.task){completeTask(match.task);return}
+   pendingCloseChoice=false;
+   reply('No encuentro esa tarea. Puedes decir el nombre del cliente y el trabajo.');return;
+ }
+ if(/^(anota|apunta|registra|agrega|crea una tarea|recuerdame|recuérdame)\b/.test(n)){
+   const title=cleanTitle(s);if(!title){reply('¿Qué anoto?');return}
+   const due=dueFrom(s);tasks.push({id:String(Date.now())+'-'+Math.random(),title,created:Date.now(),done:false,due,alerted:false});persist();render();reply(due?'Anotado. Te aviso mientras JP esté abierto.':'Anotado.');return;
+ }
+ if(/(que.*pendient|mis pendientes|tareas pendientes|que debo revisar|lista de tareas|que tengo que hacer|que tengo para hoy)/.test(n)){
+   const open=tasks.filter(t=>!t.done);reply(open.length?'Tienes '+open.length+' pendientes. '+open.slice(0,6).map(x=>x.title).join('. '):'No tienes pendientes.');return;
+ }
+ // Detecta ordenes de cierre en cualquier lugar de la frase, no solo al comienzo.
+ const closeIntent=/(?:^|\s)(?:ya revise|ya termine|ya lo revise|ya lo termine|he revisado|he terminado|termine|revise|conclui|finalice|finalizado|completado|esta conforme|quedo conforme|esta listo|ya quedo|marca como terminad|marcalo como terminad|cierra la tarea|cerrar la tarea|tacha la tarea|tachala|aprobado)(?:\s|$)/.test(n);
+ if(closeIntent){
+   const match=findTaskFromSpeech(n);
+   if(match.task){completeTask(match.task);return}
+   if(match.error){reply(match.error);return}
+   pendingCloseChoice=true;reply('¿Cuál de tus pendientes terminaste?');return;
+ }
+ if(/^(hola|buenos dias|buenas tardes|buenas noches)(\s|$)/.test(n)){reply('Hola, te escucho.');return}
+ if(/(como estas|que tal estas)/.test(n)){reply('Todo bien. Dime.');return}
+ if(/(gracias|muchas gracias)/.test(n)){reply('Con gusto.');return}
+ if(/(ayuda|que puedes hacer)/.test(n)){reply('Puedo conversar, registrar pendientes y cerrarlos por voz.');return}
+ askAI(s);
+}
+function tick(){let changed=false;for(const t of tasks){if(t.done||!t.due||t.alerted||t.due>Date.now())continue;t.alerted=true;changed=true;const txt='JP SERCONT: pendiente '+t.title;addBubble('🔔 '+txt);if(Notification.permission==='granted')try{new Notification('JP SERCONT',{body:t.title})}catch{};if(!speaking&&!active&&$('voice').checked)reply('Recordatorio: '+t.title)}if(changed){persist();render()}}
+try{const c=JSON.parse(localStorage.getItem(CONFIG_KEY)||'{}');$('endpoint').value=c.endpoint||'';$('access').value=c.access||''}catch{}
+$('saveConfig').onclick=()=>{const endpoint=$('endpoint').value.trim(),access=$('access').value.trim();localStorage.setItem(CONFIG_KEY,JSON.stringify({endpoint,access}));$('aiStatus').textContent='Conexión guardada solo en este navegador.'};
+$('testAI').onclick=()=>{askAI('Salúdame brevemente en español como JP SERCONT y dime que la conexión de IA funciona.');};
+$('wake').onclick=()=>{if(wakeMode){stop();return}stop();wakeMode=true;continuous=true;stopping=false;restartFailures=0;wakeUntil=0;$('wake').textContent='Detener «Hola JP»';$('continuous').textContent='Pausar conversación';setStatus('👂 Esperando «Hola JP»…');start()};
+$('voiceChoice').onchange=()=>localStorage.setItem('jp_voice_v42',$('voiceChoice').value);if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}$('testVoice').onclick=()=>reply('Hola, soy JP. Esta es mi voz. ¿Qué necesitas revisar hoy?');$('continuous').onclick=()=>{if(continuous){stop();return}wakeMode=false;wakeUntil=0;continuous=true;stopping=false;restartFailures=0;$('continuous').textContent='Pausar conversación';start()};$('once').onclick=()=>{continuous=false;stopping=false;start()};$('stop').onclick=stop;$('send').onclick=()=>{const v=$('typed').value;$('typed').value='';process(v)};$('typed').addEventListener('keydown',e=>{if(e.key==='Enter')$('send').click()});$('clear').onclick=()=>{tasks=tasks.filter(t=>!t.done);persist();render()};$('export').onclick=()=>{const u=URL.createObjectURL(new Blob([JSON.stringify(tasks,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download='jp-sercont-tareas.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)};$('permission').onclick=async()=>{if(!('Notification'in window)){setStatus('Notificaciones no disponibles en este navegador.');return}const p=await Notification.requestPermission();setStatus('Permiso de notificaciones: '+p)};$('testalert').onclick=()=>{if('Notification'in window&&Notification.permission==='granted')try{new Notification('JP SERCONT',{body:'Prueba de aviso de JP.'})}catch(e){setStatus('No se pudo mostrar el aviso: '+e.message)}else setStatus('Primero autoriza las notificaciones. En algunos navegadores móviles no se permiten desde páginas abiertas sin un service worker.')};window.addEventListener('pagehide',()=>{if(rec)try{rec.abort()}catch{}});persist();render();setInterval(tick,12000);})();
+</script></body></html>
